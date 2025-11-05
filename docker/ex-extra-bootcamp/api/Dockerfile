@@ -1,39 +1,17 @@
-# Base comum
-FROM node:18-alpine AS base
-WORKDIR /app
-ENV NODE_ENV=production
+# Usa imagem Alpine leve para reduzir tamanho
+FROM node:18-alpine
+
+WORKDIR /usr/src/app
+
 COPY package*.json ./
 
-# Camada de dependências para produção 
-FROM base AS deps-prod
-COPY package*.json ./
 RUN npm ci --only=production
 
-# Camada de dependências para desenvolvimento 
-FROM node:18-alpine AS deps-dev
-WORKDIR /app
-ENV NODE_ENV=development
-COPY package*.json ./
-RUN npm ci
+COPY src/ ./src
 
-# Imagem de desenvolvimento
-FROM node:18-alpine AS dev
-WORKDIR /app
-ENV NODE_ENV=development
-COPY --from=deps-dev /app/node_modules ./node_modules
-COPY . .    
 EXPOSE 3000
-CMD ["npm", "run", "dev"]
 
-# Imagem de produção
-FROM base AS prod
-ENV NODE_ENV=production
-
-COPY --from=deps-prod /app/node_modules ./node_modules
-COPY package*.json ./
-COPY src ./src
-EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD node -e "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 'OK' : 'NO')})"
 
 CMD ["node", "src/index.js"]
-
-
