@@ -1,0 +1,8 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ex01-orion-bootcamp:latest
+    ports:
+      - "3000:3000"
