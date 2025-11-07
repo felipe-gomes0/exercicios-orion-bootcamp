@@ -17,6 +17,7 @@ services:
     volumes:
       # Cria um "volume nomeado" para persistir os dados do postgres
       # Mesmo se você rodar 'docker compose down', seus dados não serão perdidos.
+      - ./sql-scripts:/docker-entrypoint-initdb.d/ # Monta o diretório local com scripts SQL 
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       # Verifica se o banco está pronto para aceitar conexões
