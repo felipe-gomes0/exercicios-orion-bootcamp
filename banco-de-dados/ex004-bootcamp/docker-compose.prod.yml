@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db_mongo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: orion_mongo_db_prod
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: orion_admin
+      MONGO_INITDB_ROOT_PASSWORD: orion_admin_pass
+    ports:
+      - "27017:27017"
+    volumes:
+      # O script de inicialização está incorporado na imagem via Dockerfile
+      - mongo_data_prod:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - orion_network_prod
+    restart: unless-stopped
+
+volumes:
+  mongo_data_prod:
+    driver: local
+
+networks:
+  orion_network_prod:
+    driver: bridge
+

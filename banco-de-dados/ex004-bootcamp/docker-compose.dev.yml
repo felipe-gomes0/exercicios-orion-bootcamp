@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  db_mongo:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: orion_mongo_db_dev
+    environment:
+
+      MONGO_INITDB_ROOT_USERNAME: orion_admin
+      MONGO_INITDB_ROOT_PASSWORD: orion_admin_pass
+    ports:
+      - "27017:27017"
+    volumes:
+      # Monta o script de inicialização do diretório local (desenvolvimento)
+      # Permite edição em tempo real durante desenvolvimento
+      - ./db/init-schema.js:/docker-entrypoint-initdb.d/init-schema.js
+      # Volume nomeado para persistir os dados do mongo
+      - mongo_data_dev:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - orion_network_dev
+
+volumes:
+  mongo_data_dev:
+    driver: local
+
+networks:
+  orion_network_dev:
+    driver: bridge
+
