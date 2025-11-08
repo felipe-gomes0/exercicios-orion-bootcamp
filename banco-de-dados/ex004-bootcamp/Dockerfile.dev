@@ -1,0 +1,11 @@
+# Dockerfile para ambiente de desenvolvimento
+
+FROM mongo:latest
+
+# Define variáveis de ambiente
+ENV MONGO_INITDB_ROOT_USERNAME=orion_admin
+ENV MONGO_INITDB_ROOT_PASSWORD=orion_admin_pass
+
+# Expõe a porta do MongoDB
+EXPOSE 27017
+
