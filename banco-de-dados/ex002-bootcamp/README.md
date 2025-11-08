@@ -12,14 +12,46 @@ ex002-bootcamp/
 │   ├── 01-create-table-cursos.sql
 │   ├── 02-create-table-alunos.sql
 │   ├── 03-insert-cursos.sql
-│   └── 04-insert-alunos.sql
+│   ├── 04-insert-alunos.sql
+│   └── consultas/
+│       ├── consulta-2.1.sql
+│       ├── consulta-2.2.sql
+│       ├── consulta-extra.sql
+│       ├── listar-alunos.sql
+│       └── update-2.3.sql
 ├── imgs/
-│   └── (imagens de documentação e exemplos)
+│   ├── ex2-extra-all-cursos.png
+│   ├── ex2-extra.png
+│   ├── ex2.1.png
+│   ├── ex2.2.png
+│   ├── ex2.3-sucess.png
+│   ├── ex2.3.1.png
+│   ├── ex2.3.2.png
+│   └── ex2.3.3.png
 ├── docker-compose.yml
 └── README.md
 ```
 
-A pasta `sql-scripts` contém todos os *scripts* SQL necessários para a inicialização e inserção de dados no banco de dados. A pasta `imgs` contém imagens de documentação e exemplos de uso.
+### 📝 Descrição dos Scripts
+
+#### Scripts de Inicialização
+
+Os scripts na raiz de `sql-scripts/` são executados automaticamente na primeira inicialização do container:
+
+* **`01-create-table-cursos.sql`**: Cria a tabela `cursos` com as colunas `id` (chave primária auto-incremento) e `nome_curso`.
+* **`02-create-table-alunos.sql`**: Cria a tabela `alunos` com as colunas `id` (chave primária), `nome`, `email` e `curso_id` (chave estrangeira referenciando `cursos.id`).
+* **`03-insert-cursos.sql`**: Insere 6 cursos iniciais (Matemática, Português, Física, Inglês, Química, Educação física).
+* **`04-insert-alunos.sql`**: Insere 8 alunos iniciais com suas respectivas referências aos cursos.
+
+#### Scripts de Consultas
+
+Os scripts na pasta `consultas/` são utilitários para consultas e atualizações no banco de dados:
+
+* **`listar-alunos.sql`**: Lista todos os alunos cadastrados na tabela `alunos`.
+* **`consulta-2.1.sql`**: Realiza um `INNER JOIN` entre as tabelas `alunos` e `cursos`, retornando o nome do aluno e o nome do curso.
+* **`consulta-2.2.sql`**: Lista apenas os alunos que estão matriculados no curso de Matemática, utilizando `INNER JOIN` com filtro `WHERE`.
+* **`update-2.3.sql`**: Atualiza o curso do aluno 'neymar' para 'Física', utilizando `UPDATE` com `JOIN`.
+* **`consulta-extra.sql`**: Lista todos os cursos que não possuem alunos matriculados, utilizando `LEFT JOIN` com filtro `WHERE` para identificar registros nulos.
 
 ## 🔧 Bancos de Dados Orquestrados
 
@@ -32,19 +64,14 @@ O arquivo `docker-compose.yml` define dois serviços principais, interligados po
 
 ### 1. PostgreSQL (`db_postgres`)
 
-* **Inicialização Automática:** O volume `- ./sql-scripts:/docker-entrypoint-initdb.d/` garante que todos os arquivos `.sql` e `.sh` na pasta `sql-scripts` sejam executados em ordem alfabética na **primeira** inicialização do container.
-* **Ordem de Execução e Conteúdo:**
-    * `01-create-table-cursos.sql`: Cria a tabela `cursos` com as colunas:
-        * `id` (INT, PRIMARY KEY, AUTO INCREMENT)
-        * `nome_curso` (VARCHAR(255))
-    * `02-create-table-alunos.sql`: Cria a tabela `alunos` com as colunas:
-        * `id` (INT, PRIMARY KEY, AUTO INCREMENT)
-        * `nome` (VARCHAR(255))
-        * `email` (VARCHAR(255))
-        * `curso_id` (INT, NOT NULL)
-        * Inclui uma *Foreign Key* (`fk_alunos_cursos`) que referencia a tabela `cursos(id)`
-    * `03-insert-cursos.sql`: Insere 6 cursos na tabela `cursos` (Matemática, Português, Física, Inglês, Química, Educação física)
-    * `04-insert-alunos.sql`: Insere 8 alunos na tabela `alunos` com suas respectivas referências aos cursos
+* **Inicialização Automática:** O volume `- ./sql-scripts:/docker-entrypoint-initdb.d/` garante que todos os arquivos `.sql` e `.sh` na pasta `sql-scripts` sejam executados em ordem alfabética na **primeira** inicialização do container. **Nota:** Apenas os scripts na raiz de `sql-scripts/` são executados automaticamente. Os scripts na pasta `consultas/` devem ser executados manualmente quando necessário.
+
+* **Ordem de Execução dos Scripts de Inicialização:**
+    1. `01-create-table-cursos.sql` - Cria a tabela de cursos
+    2. `02-create-table-alunos.sql` - Cria a tabela de alunos (com referência a cursos)
+    3. `03-insert-cursos.sql` - Popula a tabela de cursos
+    4. `04-insert-alunos.sql` - Popula a tabela de alunos
+
 * **Credenciais de Acesso:**
     * **Usuário:** `orion_user`
     * **Senha:** `orion_password`
@@ -63,6 +90,8 @@ O arquivo `docker-compose.yml` define dois serviços principais, interligados po
     ```
 
 4.  O PostgreSQL será inicializado, executará os scripts SQL e estará pronto para uso. O MongoDB também estará ativo e configurado.
+
+5. Conecte com as credenciais de acesso em um DBeaver/pgAdmin e utilize os scripts na pasta `consultas/`para realizar os testes. 
 
 ### Limpeza e Reinicialização
 
