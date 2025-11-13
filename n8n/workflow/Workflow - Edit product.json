@@ -1,0 +1,506 @@
+{
+  "name": "Workflow - Edit product",
+  "nodes": [
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1248,
+        368
+      ],
+      "id": "bd783535-44d4-4539-b3b1-a715ac487104",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Sucesso!</title>\n    <style>\n        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');\n\n        body {\n            font-family: 'Inter', sans-serif;\n            background-color: #f5f5f5;\n            margin: 0;\n            padding: 20px;\n            color: #333;\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            min-height: 100vh;\n        }\n\n        .container {\n            max-width: 450px;\n            text-align: center;\n            background-color: #fff;\n            padding: 40px;\n            border-radius: 8px;\n            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);\n        }\n\n        .success-icon {\n            color: #28a745;\n            margin-bottom: 20px;\n        }\n\n        .success-icon svg {\n            width: 60px;\n            height: 60px;\n            stroke-width: 2;\n        }\n\n        .container h1 {\n            font-size: 24px;\n            font-weight: 700;\n            margin: 0 0 10px 0;\n            color: #222;\n        }\n\n        .container p {\n            font-size: 16px;\n            color: #666;\n            margin-bottom: 30px;\n        }\n\n        .main-button {\n            background-color: #333;\n            color: #fff;\n            border: none;\n            padding: 12px 25px;\n            border-radius: 6px;\n            font-size: 15px;\n            font-weight: 600;\n            cursor: pointer;\n            display: inline-block;\n            text-decoration: none;\n            transition: background-color 0.3s ease;\n        }\n\n        .main-button:hover {\n            background-color: #555;\n        }\n\n        .secondary-link {\n            display: block;\n            margin-top: 15px;\n            font-size: 14px;\n            color: #666;\n            text-decoration: none;\n            font-weight: 500;\n            transition: color 0.3s ease;\n        }\n\n        .secondary-link:hover {\n            color: #333;\n            text-decoration: underline;\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <div class=\"success-icon\">\n            <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" xmlns=\"http://www.w3.org/2000/svg\">\n                <path d=\"M22 11.08V12a10 10 0 1 1-5.93-9.14\"></path>\n                <polyline points=\"22 4 12 14.01 9 11.01\"></polyline>\n            </svg>\n        </div>\n        \n        <h1>Produto Alterado com Sucesso!</h1>\n        \n        <a href=\"http://localhost:5678/webhook/crud\" class=\"main-button\">\n            Voltar para a Lista de Produtos\n        </a>\n\n        <a href=\"http://localhost:5678/webhook/crud/createProduct\" class=\"secondary-link\">\n            Cadastrar Produto\n        </a>\n    </div>\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1024,
+        368
+      ],
+      "id": "71337870-e750-4808-a0d9-fd97e77d5fcb",
+      "name": "HTML2"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc",
+          "mode": "list",
+          "cachedResultName": "Workflow - N8N",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome": "={{ $json.body.nome }}",
+            "custo": "={{ $json.body.custo }}",
+            "categoria": "={{ $json.body.categoria }}",
+            "id": "={{ $json.body.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "custo",
+              "displayName": "custo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "categoria",
+              "displayName": "categoria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        800,
+        368
+      ],
+      "id": "b926f3d2-5719-4951-9026-a2d8e7fa97df",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "qd9GiJn2j0Z4dxrP",
+          "name": "Google sheets Service Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Cadastro de Produto</title>\n    <style>\n        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');\n\n        body {\n            font-family: 'Inter', sans-serif;\n            background-color: #f5f5f5;\n            margin: 0;\n            padding: 20px;\n            color: #333;\n        }\n\n        .container {\n            max-width: 600px; \n            margin: 0 auto;\n            background-color: #fff;\n            padding: 30px;\n            border-radius: 8px;\n            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);\n        }\n\n        .header {\n            margin-bottom: 30px;\n        }\n\n        .header h1 {\n            font-size: 28px;\n            font-weight: 700;\n            margin: 0;\n            color: #222;\n        }\n\n        .header p {\n            font-size: 15px;\n            color: #666;\n            margin-top: 5px;\n        }\n\n        .form-group {\n            margin-bottom: 20px;\n        }\n\n        .form-group label {\n            display: block;\n            margin-bottom: 8px;\n            font-weight: 600;\n            color: #333;\n            font-size: 15px;\n        }\n\n        .form-group input[type=\"text\"],\n        .form-group input[type=\"number\"]\n      {\n            width: 100%;\n            padding: 12px;\n            border: 1px solid #ddd;\n            border-radius: 6px;\n            box-sizing: border-box; /\n            font-size: 15px;\n            color: #333;\n            font-family: 'Inter', sans-serif;\n            transition: border-color 0.3s ease;\n        }\n\n        .form-group input:focus,\n        .form-group select:focus{\n            border-color: #333;\n            outline: none;\n            box-shadow: 0 0 0 1px #333;\n        }\n\n        .submit-button {\n            background-color: #333;\n            color: #fff;\n            border: none;\n            padding: 14px 25px;\n            border-radius: 6px;\n            font-size: 16px;\n            font-weight: 600;\n            cursor: pointer;\n            width: 100%;\n            transition: background-color 0.3s ease;\n        }\n\n        .submit-button:hover {\n            background-color: #555;\n        }\n\n        /* Estilo para um botão secundário (Cancelar) - opcional */\n        .cancel-button {\n            background-color: #f0f0f0;\n            color: #666;\n            border: 1px solid #ddd;\n            padding: 14px 25px;\n            border-radius: 6px;\n            font-size: 16px;\n            font-weight: 600;\n            cursor: pointer;\n            width: 100%;\n            margin-top: 10px;\n            transition: background-color 0.3s ease, color 0.3s ease;\n        }\n\n        .cancel-button:hover {\n            background-color: #e0e0e0;\n            color: #333;\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <div class=\"header\">\n            <h1>Editar o Produto</h1>\n            <p>Preencha os dados do novo item a ser adicionado ao estoque.</p>\n        </div>\n\n        <form action=\"submit\" method=\"POST\" >\n            <div class=\"form-group\">\n              <input type=\"hidden\" name=\"id\" value=\"{{ $json.id }}\">\n                <label for=\"nome\">Nome do Produto</label>\n                <input type=\"text\" id=\"nome\" name=\"nome\"  required value=\"{{ $json.nome }}\">\n            </div>\n\n            <div class=\"form-group\">\n                <label for=\"custo\">Custo (R$)</label>\n                <input type=\"number\" id=\"custo\" name=\"custo\" step=\"0.01\" min=\"0\" required value=\"{{ $json.custo }}\">\n            </div>\n\n            <div class=\"form-group\">\n                <label for=\"categoria\">Categoria</label>\n                <input type=\"text\" for=\"categoria\" id=\"categoria\" name=\"categoria\"required value=\"{{ $json.categoria }}\">\n            </div>\n\n            <a>\n            <button type=\"submit\" class=\"submit-button\">\n                Salvar Produto\n            </button>\n            </a>\n          <a href=\"http://localhost:5678/webhook/crud\">\n            <button type=\"button\" class=\"cancel-button\">\n                Cancelar\n            </button>\n          </a>\n        </form>\n    </div>\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        800,
+        16
+      ],
+      "id": "74fe9d6f-e8c2-41aa-b375-dde2761b1867",
+      "name": "HTML - Editar"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc",
+          "mode": "list",
+          "cachedResultName": "Workflow - N8N",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id",
+              "lookupValue": "={{ $('Webhook - Editar por id').item.json.params[\"\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        576,
+        16
+      ],
+      "id": "82f9e47e-a28a-4aee-b5a9-b4f7df5603c2",
+      "name": "Buscar ID",
+      "credentials": {
+        "googleApi": {
+          "id": "qd9GiJn2j0Z4dxrP",
+          "name": "Google sheets Service Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "0e0fcbb8-37b3-483d-ad2f-9202f265c14d/crud/edit/submit",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        352,
+        368
+      ],
+      "id": "e2ee40ec-63f6-4b9e-880d-9c1a4bb7c3b5",
+      "name": "Webhook  - Submit edição de produto",
+      "webhookId": "87059aa1-b47a-4e58-a3ff-4890fc2acbed"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1b8b4056-da30-4151-acf5-e9ebcb34ab99",
+              "name": "body",
+              "value": "={{ $json.body }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        576,
+        368
+      ],
+      "id": "e5a18288-f3f9-421c-95a8-ac75249a7f08",
+      "name": "Coleta body"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/crud/edit/submit",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "=id",
+              "value": "={{ $('Buscar ID').item.json.id }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {}
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1248,
+        16
+      ],
+      "id": "ed1d8428-0dd3-47e3-8508-7a3badd86af8",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1024,
+        16
+      ],
+      "id": "d9e0f896-7928-48f4-9241-44298b4c397b",
+      "name": "Renderiza HTML de edição de produto"
+    },
+    {
+      "parameters": {
+        "content": "## Trigger\n",
+        "height": 272,
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        272,
+        -96
+      ],
+      "id": "22a383ca-297a-4fcc-a80b-ca9683a57c14",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Construindo tela de edição\n\n",
+        "height": 272,
+        "width": 656,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        528,
+        -96
+      ],
+      "id": "6b66ec0b-df52-44a4-a782-64116ce5bdcf",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Retorna HTML da página de edição\n\n\n",
+        "height": 272,
+        "width": 272,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1168,
+        -96
+      ],
+      "id": "36f2c5c1-5ffe-4d9b-a82d-a7ed38adb2f7",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "path": "=crud/edit/:",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        352,
+        16
+      ],
+      "id": "178af36c-5261-4b26-a40a-851fc85a7237",
+      "name": "Webhook - Editar por id",
+      "webhookId": "0e0fcbb8-37b3-483d-ad2f-9202f265c14d"
+    },
+    {
+      "parameters": {
+        "content": "## Trigger\n",
+        "height": 272,
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        256,
+        256
+      ],
+      "id": "e78d313a-8ed2-46a9-9dd7-ddcbeeaf082a",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Atualizando dados no Google Sheets\n",
+        "height": 272,
+        "width": 656,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        512,
+        256
+      ],
+      "id": "da92b1c1-0fde-4ae4-a901-f830251e3d6b",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Retorna tela de sucesso de edição\n\n\n\n",
+        "height": 272,
+        "width": 272,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        256
+      ],
+      "id": "b439a603-c2c8-47ce-9f40-662d1c43c8ca",
+      "name": "Sticky Note5"
+    }
+  ],
+  "pinData": {
+    "Webhook  - Submit edição de produto": [
+      {
+        "json": {
+          "headers": {
+            "host": "localhost:5678",
+            "user-agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:145.0) Gecko/20100101 Firefox/145.0",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "accept-language": "pt-BR,en-US;q=0.7,en;q=0.3",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "content-type": "application/x-www-form-urlencoded",
+            "content-length": "59",
+            "origin": "null",
+            "connection": "keep-alive",
+            "referer": "http://localhost:5678/",
+            "upgrade-insecure-requests": "1",
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-user": "?1",
+            "priority": "u=0, i"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "id": "1",
+            "nome": "alterando produto",
+            "custo": "400",
+            "categoria": "perifericos"
+          },
+          "webhookUrl": "http://localhost:5678/webhook/crud/edit/submit",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "HTML2": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTML2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML - Editar": {
+      "main": [
+        [
+          {
+            "node": "Renderiza HTML de edição de produto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar ID": {
+      "main": [
+        [
+          {
+            "node": "HTML - Editar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook  - Submit edição de produto": {
+      "main": [
+        [
+          {
+            "node": "Coleta body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Coleta body": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Renderiza HTML de edição de produto": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook - Editar por id": {
+      "main": [
+        [
+          {
+            "node": "Buscar ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ee7aeded-3c58-4d8f-9ab5-8ec39e2d2027",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "17576d04a48f54985c12ebc1d2b2cfafcb6d27445b37136e1fd9c012527b9a9e"
+  },
+  "id": "noigkIjGrwaZCBk0",
+  "tags": []
+}

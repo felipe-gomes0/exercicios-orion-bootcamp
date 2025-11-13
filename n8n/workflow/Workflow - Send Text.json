@@ -1,0 +1,221 @@
+{
+  "name": "Workflow - Send Text",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "881bdef9-287a-4ea4-8c6f-ec886e4ee14f",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://evolution-api:8080/message/sendText/{{ $('When Executed by Another Workflow').item.json.body.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "0R10NdrAfl2sc3IozIarMSCG"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('When Executed by Another Workflow').item.json.body.data.key.remoteJid }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ JSON.parse($json.content.parts[0].text).message }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        720,
+        0
+      ],
+      "id": "93bee938-93d5-4550-9215-1d46f6fe019e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "={{ $json.body.data.message.conversation }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "systemMessage": "Você é um bot de whatsapp que deve responder de forma animada e não deve utilizar emoji, além disso deve obrigatoriamente retornar a resposta como: \n\n```\n\n{\"message\": \"string response\"}\n```"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        304,
+        0
+      ],
+      "id": "88e72ed6-0f7c-43e0-8493-c6eff0c5c48e",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bTPoiVKqrIhAxKqj",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Recebe mensagem ",
+        "height": 224,
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        -48
+      ],
+      "id": "909ef244-258b-4c12-89dd-a66510a56880",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Analisa a mensagem e retorna uma resposta",
+        "height": 288,
+        "width": 368,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        -96
+      ],
+      "id": "c6397fcd-0e1c-4ed3-b14f-5843c3aacf63",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Envia mensagem de resposta a pessoa",
+        "height": 272,
+        "width": 272,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        672,
+        -96
+      ],
+      "id": "866d3a86-55b8-4af6-acc3-d21dbd6f0b9e",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "headers": {
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "axios/1.12.2",
+            "content-length": "632",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "host": "n8n:5678",
+            "connection": "keep-alive"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "n8n",
+            "data": {
+              "key": {
+                "remoteJid": "556992717580@s.whatsapp.net",
+                "remoteJidAlt": "173654117757159@lid",
+                "fromMe": true,
+                "id": "3EB022E34CEFEA91AB5746",
+                "participant": "",
+                "addressingMode": "pn"
+              },
+              "pushName": "felipe",
+              "status": "SERVER_ACK",
+              "message": {
+                "conversation": "teste"
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1762897178,
+              "instanceId": "ae4504df-24d5-4dbb-954d-a015b4eae863",
+              "source": "web"
+            },
+            "destination": "http://n8n:5678/webhook/wpp",
+            "date_time": "2025-11-11T18:39:38.427Z",
+            "sender": "556992717580@s.whatsapp.net",
+            "server_url": "http://localhost:8080",
+            "apikey": "DF11316FD4D8-4897-9BE7-147F61744DAF"
+          },
+          "webhookUrl": "http://localhost:5678/webhook/wpp",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b90b76b8-f172-4287-8988-b34d351d980c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "17576d04a48f54985c12ebc1d2b2cfafcb6d27445b37136e1fd9c012527b9a9e"
+  },
+  "id": "O8EvrBqW2wXdCViD",
+  "tags": []
+}
