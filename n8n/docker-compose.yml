@@ -76,6 +76,7 @@ services:
       - "5678:5678"
     volumes:
       - ./n8n_data_orion:/.n8n
+      - ./workflow:/.n8n/workflows
     networks:
       - orion-n8n-network
 
