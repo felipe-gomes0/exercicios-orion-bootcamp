@@ -1,0 +1,349 @@
+{
+  "name": "Workflow - List products",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "f66ec296-c1aa-4f85-93c5-3e4f4caa104c",
+      "name": "Lista tabela",
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleApi": {
+          "id": "qd9GiJn2j0Z4dxrP",
+          "name": "Google sheets Service Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        880,
+        16
+      ],
+      "id": "b5ab1777-fc24-4b1f-aabe-05e47fa52606",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1104,
+        0
+      ],
+      "id": "16b3fc11-ea41-4bb9-af82-488c3de7a364",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "path": "crud/list",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3669d949-914d-4ec1-825a-37eec3972927",
+      "name": "Webhook",
+      "webhookId": "594227ad-875e-45ad-b852-4faefd8e3610"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b2bec65b-586b-4292-af05-bd01589e1b58",
+              "leftValue": "={{ $item(\"0\").$node[\"Lista tabela\"].json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "17d9ea62-8a53-4bac-84a7-a4e98d18cac0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc",
+          "mode": "list",
+          "cachedResultName": "Workflow - N8N",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "1",
+            "nome": "Produto exemplo",
+            "custo": "0",
+            "categoria": "Exemplo"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "custo",
+              "displayName": "custo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "categoria",
+              "displayName": "categoria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        624,
+        -208
+      ],
+      "id": "9a74a174-f786-4a36-a5df-642115d70469",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "qd9GiJn2j0Z4dxrP",
+          "name": "Google sheets Service Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Trigger\n",
+        "height": 272,
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        -80
+      ],
+      "id": "d76fd9ec-accb-4a6b-a56f-a0f96a3d8bea",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Buscando dados do produto\n\n",
+        "height": 432,
+        "width": 848,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        208,
+        -224
+      ],
+      "id": "ee1980b9-1965-4bbd-bc48-2394b3d51ec6",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Retorna dado\n\n",
+        "height": 272,
+        "width": 272,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1072,
+        -80
+      ],
+      "id": "0ea821a5-e6c7-40c3-a36e-a2a4faa9aa8c",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7",
+            "user-agent": "axios/1.12.0",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "host": "localhost:5678",
+            "connection": "close"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "http://localhost:5678/webhook/crud/list",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Lista tabela": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Lista tabela",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "10b18263-261b-410d-bcca-963b6183c73e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "17576d04a48f54985c12ebc1d2b2cfafcb6d27445b37136e1fd9c012527b9a9e"
+  },
+  "id": "kz0Nh7yKYFNE3vzJ",
+  "tags": []
+}

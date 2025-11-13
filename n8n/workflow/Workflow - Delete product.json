@@ -1,0 +1,511 @@
+{
+  "name": "Workflow - Delete product",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "crud/delete/:id",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        336,
+        48
+      ],
+      "id": "c69f6e57-9018-44db-bbb9-7635d61eb5a0",
+      "name": "Webhook - Editar por id",
+      "webhookId": "fedddae4-ce1e-41b7-9d8a-f7ea04694183"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc",
+          "mode": "list",
+          "cachedResultName": "Workflow - N8N",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id",
+              "lookupValue": "={{ $('Webhook - Editar por id').item.json.params.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        576,
+        64
+      ],
+      "id": "ff243b0e-8446-4ad4-8214-9e9982a5b7be",
+      "name": "Buscar ID",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleApi": {
+          "id": "qd9GiJn2j0Z4dxrP",
+          "name": "Google sheets Service Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1696,
+        -208
+      ],
+      "id": "6f622884-bd15-438a-afc3-ec3052d6b512",
+      "name": "Renderiza HTML de edição de produto"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc",
+          "mode": "list",
+          "cachedResultName": "Workflow - N8N",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QssIRTSxwCaF2YS1R_Dysa5rLkt5crZovhpW4plCYGc/edit#gid=0"
+        },
+        "startIndex": "={{ $json.row_number }}"
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        928,
+        -224
+      ],
+      "id": "49cd8ae8-d6d2-48fa-83f1-3394774731e7",
+      "name": "Delete rows or columns from sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "qd9GiJn2j0Z4dxrP",
+          "name": "Google sheets Service Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.success }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "4859d8e8-b860-4f9e-8ac2-4407f8a4bce0"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4ff7b5ef-517a-41dd-9044-9ee2c8f73141",
+                    "leftValue": "={{ $json.success }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "false",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        1184,
+        -208
+      ],
+      "id": "a61b89b5-9aa2-4add-888b-021a8b016a47",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Excluído com Sucesso</title>\n    <style>\n        body {\n            font-family: Arial, sans-serif;\n            background-color: #f4f4f9;\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            min-height: 100vh;\n            margin: 0;\n        }\n        .container {\n            background-color: #fff;\n            padding: 30px;\n            border-radius: 8px;\n            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n            max-width: 400px;\n            text-align: center;\n            border-left: 5px solid #28a745; /* Barra lateral verde de sucesso */\n        }\n        h1 {\n            color: #28a745; /* Verde para sucesso */\n            margin-bottom: 15px;\n            font-size: 1.8em;\n        }\n        p {\n            color: #333;\n            margin-bottom: 25px;\n            font-size: 1em;\n        }\n        .return-link {\n            display: inline-block;\n            padding: 10px 20px;\n            background-color: #007bff;\n            color: white;\n            text-decoration: none;\n            border-radius: 4px;\n            font-weight: bold;\n            transition: background-color 0.3s ease;\n        }\n        .return-link:hover {\n            background-color: #0056b3;\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <h1>Produto Deletado com Sucesso!</h1>\n        <p>O item com o ID  foi removido permanentemente.</p>\n\n        <a href=\"http://localhost:5678/webhook/crud\" class=\"return-link\">\n            Voltar para a Lista\n        </a>\n    </div>\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1472,
+        -208
+      ],
+      "id": "c6f00be1-1928-4273-973f-bab4efd01ff8",
+      "name": "HTML - Deletar"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Falha na Exclusão</title>\n    <style>\n        body {\n            font-family: Arial, sans-serif;\n            background-color: #f4f4f9;\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            min-height: 100vh;\n            margin: 0;\n        }\n        .container {\n            background-color: #fff;\n            padding: 30px;\n            border-radius: 8px;\n            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n            max-width: 450px;\n            text-align: center;\n            border-left: 5px solid #dc3545; \n        }\n        h1 {\n            color: #dc3545; \n            margin-bottom: 15px;\n            font-size: 1.8em;\n        }\n        p {\n            color: #333;\n            margin-bottom: 25px;\n            font-size: 1em;\n        }\n        .details {\n            text-align: left;\n            margin-bottom: 20px;\n            padding: 10px;\n            background-color: #f8d7da; \n            border: 1px solid #f5c6cb;\n            border-radius: 4px;\n            color: #721c24; \n            font-size: 0.9em;\n        }\n        .return-link {\n            display: inline-block;\n            padding: 10px 20px;\n            background-color: #6c757d;\n            color: white;\n            text-decoration: none;\n            border-radius: 4px;\n            font-weight: bold;\n            transition: background-color 0.3s ease;\n        }\n        .return-link:hover {\n            background-color: #5a6268;\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <h1>Falha ao Deletar Produto!</h1>\n        <p>Não foi possível remover o item com o ID {{ $('Webhook - Editar por id').item.json.params.id }}</p>\n\n\n        <a href=\"http://localhost:5678/webhook/crud\" class=\"return-link\">\n            Voltar para a Lista\n        </a>\n    </div>\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1472,
+        64
+      ],
+      "id": "27ca1ad8-c8d5-40db-9738-78b843f60d79",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1696,
+        48
+      ],
+      "id": "f8a89927-d963-46e2-8af0-15609af16240",
+      "name": "Renderiza HTML de edição de produto1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f56e3ea1-2d33-4ff1-b818-91f56479dc4e",
+                    "leftValue": "={{ $json.id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "number",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Achou produto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "=",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    },
+                    "id": "3ef8ea70-b82f-4c69-9a54-aaf4805ed83f"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Não achou produto"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        800,
+        48
+      ],
+      "id": "a1577059-89bd-4c55-b9cc-a008bfe7f031",
+      "name": "Switch2",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "content": "## Trigger\n",
+        "height": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        272,
+        16
+      ],
+      "id": "74f83974-1995-4cf4-a32b-3693404c378a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Busca ID\n",
+        "height": 192,
+        "width": 432,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        528,
+        16
+      ],
+      "id": "398ebac6-a562-4696-bc90-4d9b67a052f3",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Remoção do produto\n",
+        "height": 240,
+        "width": 816,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        800,
+        -288
+      ],
+      "id": "12839c6b-aa5f-43db-a787-612e3ec11926",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Erro na remoção\n",
+        "height": 224,
+        "width": 464,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        0
+      ],
+      "id": "eb6c60a4-f600-40a3-a40a-338fefc054c8",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Sucesso na remoção\n",
+        "height": 240,
+        "width": 304,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1632,
+        -288
+      ],
+      "id": "00c3abf4-a075-4464-9ba5-ebd2599e1753",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {
+    "Webhook - Editar por id": [
+      {
+        "json": {
+          "headers": {
+            "host": "localhost:5678",
+            "user-agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:145.0) Gecko/20100101 Firefox/145.0",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "accept-language": "pt-BR,en-US;q=0.7,en;q=0.3",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "connection": "keep-alive",
+            "cookie": "rl_session=RudderEncrypt%3AU2FsdGVkX1%2BjdJEwv3ql907NS%2F74EwISw6HknTfM9PGe%2F%2FGn9XuMjf81koRtF%2FLB1EPIYh4EtnilzS2v3npcGmHG%2F20kfB9USIeyStMcTN%2F6OvENI2KaQ%2Fy%2B259TP1AkmVZ%2Bspt4zGMwSaSAzDhx2g%3D%3D; rl_anonymous_id=RudderEncrypt%3AU2FsdGVkX1%2FPpgHfWfx%2FR0GvEMJTnuopDem4XGuv0jk1ZvP3AmQttL9wSK%2F939C6YK8T6bTkLu3LvsbmCmbZJw%3D%3D; rl_page_init_referrer=RudderEncrypt%3AU2FsdGVkX19bHFPgZn96gS52GTp0%2FqFZOqRyY23gGfo%3D; rl_page_init_referring_domain=RudderEncrypt%3AU2FsdGVkX1868DhAVKt0RyGdxyzcfFAqdem4tEiGAdA%3D; rl_user_id=RudderEncrypt%3AU2FsdGVkX19uISnUa8w%2Fi0QQN0IlKh4bb57peu%2FaYrAOe%2FgmU7qrzfwiD3bRWYC%2FOO6Wa1K6zGsAJ4D7yFfIqcEzuftxTJKLFSte%2FiggPmD4x6mxE8tfjrByAbP7SzUjQTpkF1likF6T4c0a%2F4BjmTx9gzJo1wM7ZYa01x7y3p8%3D; rl_trait=RudderEncrypt%3AU2FsdGVkX19S0Z7lMGaUwm9jiuwmfzFZMaWKuLTkUn1jQZahq0XTR40PHMduhn2T4Z3o2PIPJFfUbZelHxl5cO3xyZi%2BraW6F0aTiC76LTbkXpLsUCxaPk%2FMg0GLJhrNScGX2rzODfjarWwOfKTzgGEXN6EEVaBPQ%2Fqm3ytLEO8%3D; ph_phc_4URIAm1uYfJO7j8kWSe0J8lc8IqnstRLS7Jx8NcakHo_posthog=%7B%22distinct_id%22%3A%2217576d04a48f54985c12ebc1d2b2cfafcb6d27445b37136e1fd9c012527b9a9e%23cbb387d1-290a-4d51-9b0d-16e221cff9d3%22%2C%22%24sesid%22%3A%5B1763004998997%2C%22019a7ab6-8db9-7454-b2e7-8924d8480410%22%2C1762995375544%5D%2C%22%24epp%22%3Atrue%2C%22%24initial_person_info%22%3A%7B%22r%22%3A%22%24direct%22%2C%22u%22%3A%22http%3A%2F%2Flocalhost%3A5678%2Fhome%2Fworkflows%22%7D%7D",
+            "upgrade-insecure-requests": "1",
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "none",
+            "sec-fetch-user": "?1",
+            "if-none-match": "W/\"679-i+oAwjl9dWskYir3cMELXdbQbqg\"",
+            "priority": "u=0, i"
+          },
+          "params": {
+            "id": "71429"
+          },
+          "query": {},
+          "webhookUrl": "http://localhost:5678/webhook/fedddae4-ce1e-41b7-9d8a-f7ea04694183/crud/delete/:id",
+          "executionMode": "production"
+        },
+        "binary": {
+          "data": {
+            "data": "",
+            "mimeType": "application/json"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook - Editar por id": {
+      "main": [
+        [
+          {
+            "node": "Buscar ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar ID": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Renderiza HTML de edição de produto": {
+      "main": [
+        []
+      ]
+    },
+    "Delete rows or columns from sheet": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "HTML - Deletar",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML - Deletar": {
+      "main": [
+        [
+          {
+            "node": "Renderiza HTML de edição de produto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Renderiza HTML de edição de produto1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Delete rows or columns from sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9e979fb1-1137-4378-9f24-1aecaba9f260",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "17576d04a48f54985c12ebc1d2b2cfafcb6d27445b37136e1fd9c012527b9a9e"
+  },
+  "id": "DNVflwpu6hCFbQ99",
+  "tags": []
+}
