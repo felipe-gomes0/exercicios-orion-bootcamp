@@ -1,0 +1,213 @@
+{
+  "name": "Workflow refactor - create product",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "api/create",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -384,
+        0
+      ],
+      "id": "5513d62d-d5dc-4023-9d16-a8770d180936",
+      "name": "Webhook",
+      "webhookId": "1c5b40e0-d3c3-45ba-83de-4bfd007f1351"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "produtos",
+          "mode": "list",
+          "cachedResultName": "produtos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "custo": "={{ $json.custo }}",
+            "nome": "={{ $json.nome }}",
+            "categoria": "={{ $json.categoria }}",
+            "criado_em": "={{$now}}",
+            "id": "={{ Math.floor(Math.random() * 10000) }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "categoria",
+              "displayName": "categoria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "custo",
+              "displayName": "custo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "criado_em",
+              "displayName": "criado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        64,
+        0
+      ],
+      "id": "925deba8-9041-4a7c-8908-b397e8443af1",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "PuTHfiOipHjiCGYW",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n\t\"nome\": \"{{ $json.body.nome }}\",\n\t\"custo\": {{ $json.body.custo }},\n\t\"categoria\": \"{{ $json.body.categoria }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        0
+      ],
+      "id": "d5c700a0-67ac-41a5-89de-57cdeeb0caa2",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        288,
+        0
+      ],
+      "id": "89d540b8-f485-4c0b-9a44-563ceac734c1",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "localhost:5678",
+            "content-type": "application/json",
+            "user-agent": "insomnia/12.0.0",
+            "accept": "*/*",
+            "content-length": "60"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "nome": "testando",
+            "custo": 22,
+            "categoria": "teste"
+          },
+          "webhookUrl": "http://localhost:5678/webhook/api/create",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "285e1539-5f72-4a8a-8e5b-a144da5a0528",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "17576d04a48f54985c12ebc1d2b2cfafcb6d27445b37136e1fd9c012527b9a9e"
+  },
+  "id": "6aj8JdMDqqIchpGy",
+  "tags": []
+}
