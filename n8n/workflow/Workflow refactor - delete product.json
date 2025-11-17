@@ -1,0 +1,168 @@
+{
+  "name": "Workflow refactor - delete product",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "DELETE",
+        "path": "api/delete/:id",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -528,
+        -208
+      ],
+      "id": "a0bcdb04-dbbb-4b02-872e-dd1ee823d4e7",
+      "name": "Webhook",
+      "webhookId": "3e943a17-ae46-4f0e-95c9-ce5388db6bfa"
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "produtos",
+          "mode": "list",
+          "cachedResultName": "produtos"
+        },
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $json.params.id }}"
+            }
+          ]
+        },
+        "options": {
+          "queryBatching": "single"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -112,
+        -208
+      ],
+      "id": "c05f0df9-1f12-458b-8d43-d4217c19238b",
+      "name": "Delete table or rows",
+      "credentials": {
+        "postgres": {
+          "id": "PuTHfiOipHjiCGYW",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e621eb01-3742-4726-96de-cea78bb312c5",
+              "name": "params.id",
+              "value": "={{ $json.params.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -320,
+        -208
+      ],
+      "id": "739a7c34-1947-4f52-92ca-6d0074c76ca7",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.success }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        144,
+        -208
+      ],
+      "id": "d67d14d1-a4c0-44be-89cf-a0c1a81a86fd",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "localhost:5678",
+            "user-agent": "insomnia/12.0.0",
+            "accept": "*/*"
+          },
+          "params": {
+            "id": "2"
+          },
+          "query": {},
+          "body": {},
+          "webhookUrl": "http://localhost:5678/webhook/3e943a17-ae46-4f0e-95c9-ce5388db6bfa/api/delete/:id",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Delete table or rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete table or rows": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "78a23615-0d5e-48f7-8d2a-c57ff50388f9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "17576d04a48f54985c12ebc1d2b2cfafcb6d27445b37136e1fd9c012527b9a9e"
+  },
+  "id": "NixAqOnJfFIYpJQd",
+  "tags": []
+}

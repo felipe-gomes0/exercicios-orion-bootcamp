@@ -1,0 +1,119 @@
+{
+  "name": "Workflow refactor - list products",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "produtos",
+          "mode": "list",
+          "cachedResultName": "produtos"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        256,
+        -48
+      ],
+      "id": "685a1cec-8821-41d8-a67a-bca9b15d7b3f",
+      "name": "Select rows from a table",
+      "credentials": {
+        "postgres": {
+          "id": "PuTHfiOipHjiCGYW",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        496,
+        -48
+      ],
+      "id": "99422945-c737-4e9f-bc1e-357d72fd6d62",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "path": "api/list",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -48
+      ],
+      "id": "6e95403b-3376-40e4-b2f3-09121518643c",
+      "name": "Webhook",
+      "webhookId": "2b383bad-32a3-4e4b-a61a-317cd902c5ac"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "localhost:5678",
+            "user-agent": "insomnia/12.0.0",
+            "accept": "*/*"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "http://localhost:5678/webhook/api/list",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Select rows from a table": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Select rows from a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "41719d55-4448-4a04-a0d3-5e61388a8344",
+  "meta": {
+    "instanceId": "17576d04a48f54985c12ebc1d2b2cfafcb6d27445b37136e1fd9c012527b9a9e"
+  },
+  "id": "yChmE2s5qJRHk6a6",
+  "tags": []
+}
