@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  flowise:
+    image: flowiseai/flowise
+    container_name: flowise_app
+    restart: always
+    environment:
+      - DATABASE_PATH=/root/.flowise
+      - APIKEY_PATH=/root/.flowise
+      - SECRETKEY_PATH=/root/.flowise
+      - LOG_PATH=/root/.flowise/logs
+      - FLOWISE_USERNAME=admin
+      - FLOWISE_PASSWORD=admin123
+    ports:
+      - "3000:3000"
+    volumes:
+      - flowise_data:/root/.flowise
+    networks:
+      - flowise_network
+    depends_on:
+      - qdrant
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant_db
+    environment:
+      - QDRANT__SERVICE__API_KEY=${QDRANT__SERVICE__API_KEY}
+    restart: always
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - flowise_network
+
+volumes:
+  flowise_data:
+    driver: local
+  qdrant_data:
+    driver: local
+
+networks:
+  flowise_network:
+    driver: bridge
